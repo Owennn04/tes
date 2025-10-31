@@ -3,8 +3,6 @@ package com.example.soal1week7.data.container
 import com.example.soal1week7.data.repositories.WeatherRepository
 import com.example.soal1week7.data.services.WeatherService
 import com.google.gson.GsonBuilder
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -21,6 +19,6 @@ class WeatherServerContainer {
         retrofit.create(WeatherService::class.java)
     }
     val weatherRepository: WeatherRepository by lazy {
-        WeatherRepository(weatherService)
+        WeatherRepository(weatherService, API_KEY)
     }
 }
