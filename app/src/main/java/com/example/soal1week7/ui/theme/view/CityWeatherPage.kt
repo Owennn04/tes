@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -203,9 +204,22 @@ fun CloudsPageContent(weatherViewModel: WeatherViewModel) {
     val currentTime by weatherViewModel.currentTime.collectAsState()
     val listWeatherInfo by weatherViewModel.listWeatherInfo.collectAsState()
 
-    Text(text = weatherState.cityName, fontSize = 32.sp, fontWeight = FontWeight.Bold, color = Color.White)
-    Text(currentDate, fontSize = 16.sp, color = Color.White)
-    Text("Updated as of $currentTime", fontSize = 14.sp, color = Color.White.copy(alpha = 0.8f))
+    Text(
+        text = weatherState.cityName,
+        fontSize = 32.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.White
+    )
+    Text(
+        text = currentDate,
+        fontSize = 16.sp,
+        color = Color.White)
+    Text(
+        text = "Updated as of $currentTime",
+        fontSize = 14.sp,
+        color = Color.White.copy(alpha = 0.8f)
+    )
+
     Spacer(modifier = Modifier.height(16.dp))
 
     Image(
@@ -214,10 +228,22 @@ fun CloudsPageContent(weatherViewModel: WeatherViewModel) {
         modifier = Modifier.size(150.dp)
     )
 
-    Text(text = "${weatherState.temperature?.toInt() ?: 0}°", fontSize = 48.sp, fontWeight = FontWeight.Bold, color = Color.White)
+    Text(
+        text = "${weatherState.temperature?.toInt() ?: 0}°",
+        fontSize = 48.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.White
+    )
 
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(text = weatherState.weatherCondition, fontSize = 20.sp, color = Color.White)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = weatherState.weatherCondition,
+            fontSize = 20.sp,
+            color = Color.White
+        )
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current).data(weatherIconUrl).crossfade(true).build(),
             contentDescription = weatherState.weatherCondition,
@@ -274,6 +300,11 @@ fun ErrorView(errorMessage: String?){
             .padding(top = 100.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        Icon(
+            imageVector = Icons.Filled.Warning,
+            contentDescription = "Warning Icon",
+            tint = Color.Red,
+        )
         Text(
             text = errorMessage ?: "Oops, Something went Wrong",
             fontSize = 18.sp,
