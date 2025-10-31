@@ -203,9 +203,22 @@ fun CloudsPageContent(weatherViewModel: WeatherViewModel) {
     val currentTime by weatherViewModel.currentTime.collectAsState()
     val listWeatherInfo by weatherViewModel.listWeatherInfo.collectAsState()
 
-    Text(text = weatherState.cityName, fontSize = 32.sp, fontWeight = FontWeight.Bold, color = Color.White)
-    Text(currentDate, fontSize = 16.sp, color = Color.White)
-    Text("Updated as of $currentTime", fontSize = 14.sp, color = Color.White.copy(alpha = 0.8f))
+    Text(
+        text = weatherState.cityName,
+        fontSize = 32.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.White
+    )
+    Text(
+        text = currentDate,
+        fontSize = 16.sp,
+        color = Color.White)
+    Text(
+        text = "Updated as of $currentTime",
+        fontSize = 14.sp,
+        color = Color.White.copy(alpha = 0.8f)
+    )
+
     Spacer(modifier = Modifier.height(16.dp))
 
     Image(
@@ -214,10 +227,22 @@ fun CloudsPageContent(weatherViewModel: WeatherViewModel) {
         modifier = Modifier.size(150.dp)
     )
 
-    Text(text = "${weatherState.temperature?.toInt() ?: 0}°", fontSize = 48.sp, fontWeight = FontWeight.Bold, color = Color.White)
+    Text(
+        text = "${weatherState.temperature?.toInt() ?: 0}°",
+        fontSize = 48.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.White
+    )
 
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(text = weatherState.weatherCondition, fontSize = 20.sp, color = Color.White)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = weatherState.weatherCondition,
+            fontSize = 20.sp,
+            color = Color.White
+        )
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current).data(weatherIconUrl).crossfade(true).build(),
             contentDescription = weatherState.weatherCondition,
