@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.soal1week7.R
 import com.example.soal1week7.data.container.WeatherServerContainer
 import com.example.soal1week7.ui.theme.model.Weather
-import com.example.soal1week7.data.repositories.WeatherRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +17,6 @@ import java.util.Date
 import java.util.Locale
 
 class WeatherViewModel : ViewModel() {
-
     private val _weather = MutableStateFlow(Weather())
 
     val weather: StateFlow<Weather> = _weather
@@ -65,14 +63,16 @@ class WeatherViewModel : ViewModel() {
     fun loadWeather(cityName: String) {
         viewModelScope.launch {
             try {
-                val result = WeatherServerContainer().WeatherRepository.getWeather(cityName)
+                val container = WeatherServerContainer()
+
+                val result = container.weatherRepository.getCityWeather(cityName)
 
                 _weather.value = result.copy(
                     isError = false,
                     errorMessage = null
                 )
 
-                _weatherIconUrl.value = WeatherServerContainer().WeatherRepository.getWeatherIcon(
+                _weatherIconUrl.value = container.weatherRepository.getWeatherIcon(
                     result.weatherIconCode
                 ).url
 

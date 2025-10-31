@@ -1,17 +1,21 @@
 package com.example.soal1week7.data.repositories
 
+import androidx.compose.ui.input.key.Key
 import com.example.soal1week7.ui.theme.model.Weather
 import com.example.soal1week7.data.services.WeatherService
 
 data class WeatherIcon(val url: String)
 
-class WeatherRepository(private val service: WeatherService) {
+class WeatherRepository(
+    private val service: WeatherService,
+    private val apiKey: String
+) {
 
     suspend fun getCityWeather(cityName: String): Weather {
         val weathers = service.getCityWeather(
             city = cityName,
             units = "metric",
-            apiKey = "c41d64b799325960010c4b23acfa4a86"
+            apiKey = this.apiKey
         )
         return Weather(
             cityName = weathers.name,

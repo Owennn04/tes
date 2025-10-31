@@ -1,5 +1,6 @@
 package com.example.soal1week7.ui.theme.view
 
+import android.os.Message
 import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,17 +37,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.soal1week7.ui.theme.viewmodel.WeatherViewModel
 
 @Composable
-fun SearchPage(){
+fun SearchPage(
+    weatherViewModel: WeatherViewModel = viewModel(),
+){
+    val weatherState by weatherViewModel.weather.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    val weatherState by viewModel.weather.collectAsState
     Box (
         modifier = Modifier
             .fillMaxSize()
@@ -99,7 +108,8 @@ fun SearchPage(){
                 Button(
                     onClick = {
                         if (searchText.isNotBlank()) {
-                            println("Searching: $searchText")
+                            weatherViewModel.loadWeather(searchText)
+                            keyboardController?.hide()
                         }
                     },
                     modifier = Modifier
@@ -130,14 +140,56 @@ fun SearchPage(){
                         .fillMaxSize()
                         .padding(horizontal = 24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    state = listState
                 ){
                     item {
-                        if (weatherState.errorMessage)
-                    }
+                        if (weatherState.isError){
+                            ErrorView(errorMessage = weatherState.errorMessage)
+                        }else if (weatherState.cityName.isBlank()){
+                            InitialView()
+                        }else{
+                            Text(
+                                text = weatherState.cityName,
+                                color = Color.White,
+                                fontSize = 32.sp
+                            )
+                        }
+                }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun InitialView(){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 100.dp),
+        contentAlignment = Alignment.Center
+    ){
+        Text(
+            text = "Search for a city to get started",
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+fun ErrorView(errorMessage: String?){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 100.dp),
+        contentAlignment = Alignment.Center
+    ){
+        Text(
+            text = errorMessage ?: "Oops, Something went Wrong",
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
