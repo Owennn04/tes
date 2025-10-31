@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -299,6 +300,11 @@ fun ErrorView(errorMessage: String?){
             .padding(top = 100.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        Icon(
+            imageVector = Icons.Filled.Warning,
+            contentDescription = "Warning Icon",
+            tint = Color.Red,
+        )
         Text(
             text = errorMessage ?: "Oops, Something went Wrong",
             fontSize = 18.sp,
