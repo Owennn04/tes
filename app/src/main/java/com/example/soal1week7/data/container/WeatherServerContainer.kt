@@ -1,5 +1,7 @@
 package com.example.soal1week7.data.container
 
+import com.example.soal1week7.data.repositories.WeatherRepository
+import com.example.soal1week7.data.services.WeatherService
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -20,6 +22,13 @@ class WeatherServerContainer {
         .baseUrl(BASE_URL)
         .client(client)
         .build()
+
+    private val weatherService: WeatherService by lazy {
+        retrofit.create(WeatherService::class.java)
+    }
+    val weatherRepository: WeatherRepository by lazy {
+        WeatherRepository(weatherService)
+    }
 
 }
 class AuthInterceptor(private val bearerToken: String): Interceptor {

@@ -1,4 +1,4 @@
-package com.vpjc.week7_8_panpanweatherapp.data.repository
+package com.example.soal1week7.data.repositories
 
 import com.example.soal1week7.ui.theme.model.Weather
 import com.example.soal1week7.data.services.WeatherService
