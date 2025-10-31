@@ -5,13 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.soal1week7.ui.theme.Soal1Week7Theme
+import com.example.soal1week7.ui.theme.view.SearchPage
+import com.example.soal1week7.ui.theme.view.CityWeatherPage
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,11 +24,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Soal1Week7Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Surface (
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    AppNavigation()
                 }
             }
         }
@@ -31,17 +36,30 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun AppNavigation() {
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Soal1Week7Theme {
-        Greeting("Android")
+    NavHost(
+        navController = navController,
+        startDestination = "search_page"
+    ) {
+
+        composable(route = "search_page") {
+            SearchPage(navController = navController)
+        }
+
+        composable(
+            route = "city_weather_page/{cityName}",
+            arguments = listOf(navArgument("cityName") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val cityName = backStackEntry.arguments?.getString("cityName")
+
+            if (cityName != null) {
+                CityWeatherPage(
+                    cityName = cityName,
+                    navController = navController
+                )
+            }
+        }
     }
 }
